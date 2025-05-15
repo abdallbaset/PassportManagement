@@ -1,0 +1,83 @@
+﻿body{
+      background-color: #f5f5f5;
+      font-family:Tajawal;
+      font-weight:900;
+       margin: 0;
+       
+}
+
+/* ✅ ضبط توزيع الهيدر */
+header {
+    display: flex;
+    justify-content: center; /* يضمن أن كل العناصر في المنتصف */
+    align-items: center;
+    background-color: #ffffff;
+    padding: 15px 30px;
+}
+
+/* ✅ تنظيم القائمة وتوسيط العناصر */
+nav {
+    width: 100%; /* يجعل القائمة تمتد على عرض الهيدر بالكامل */
+    display: flex;
+    justify-content: center; /* يضمن توسيط العناصر داخل القائمة */
+}
+
+nav ul {
+    display: flex;
+    list-style: none;
+    gap: 20px; /* المسافة بين عناصر القائمة */
+    justify-content: center; /* يجعل العناصر في المنتصف */
+    padding: 0;
+    margin: 0;
+}
+
+/* ✅ ضبط العناصر داخل القائمة */
+nav ul li {
+    display: flex;
+    align-items: center;
+}
+
+/* ✅ ضبط الروابط */
+nav ul li a {
+    text-decoration: none;
+    color: black;
+    font-size: 16px;
+    padding: 10px;
+    transition: 0.3s;
+}
+
+nav ul li a:hover {
+    background-color: #1f3a66;
+    border-radius: 5px;
+    color: white;
+}
+.logout a:hover{
+        background-color: red;
+    border-radius: 5px;
+    color: white;
+}
+
+/* ✅ ضبط الصورة على أقصى اليمين */
+.logo {
+    margin-left: auto; /* يدفع الصورة إلى أقصى اليمين */
+    display: flex;
+    align-items: center;
+}
+
+.logo img {
+    width: 120px;
+}
+
+
+/* ✅ تنسيق الفوتر */
+footer {
+    background-color: #ffffff;
+    color:black;
+    text-align: center;
+    padding: 15px;
+    position: relative;
+    bottom:0;
+  
+    margin:0px;
+   
+}

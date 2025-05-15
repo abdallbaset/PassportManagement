@@ -1,0 +1,47 @@
+﻿<%@ Master Language="C#"  %>
+
+<!DOCTYPE html>
+<html lang="ar">
+<head runat="server">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <link rel="stylesheet" href="main user interface.css">
+    
+</head>
+<body>
+
+    <form id="form1" runat="server">
+
+  
+    <header>
+        <nav>
+
+
+            <ul>
+                 <li class="logout"><a href="LostPassport.aspx">تسجيل خروج</a></li>
+                <li><a href="LostPassport.aspx">سجل التقارير</a></li>
+                <li><a href="RequestStatus.aspx">سجل العمليات</a></li>
+                <li><a href="CancelBooking.aspx">الطلبات</a></li>
+                <li><a href="RenewPassport.aspx">تعديل بيانات المستخدم</a></li>
+                <li><a href="CreatePassport.aspx">إضافة مستخدم</a></li>
+                <li><a href="Home.aspx">الصفحة الرئيسية</a></li>
+            </ul>
+        </nav>
+        <div class="logo">
+            <asp:Image ID="Image1" runat="server" Height="93px" ImageUrl="~/image/logo.png" />
+        </div>
+    </header>
+
+  
+    <asp:ContentPlaceHolder ID="MainContent" runat="server"></asp:ContentPlaceHolder>
+
+  
+    <footer>
+        <p>© جميع الحقوق محفوظة - ليبيا مصلحة الجوازات 2025</p>
+    </footer>
+
+    </form>
+
+</body>
+</html>
