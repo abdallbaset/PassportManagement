@@ -14,7 +14,7 @@
      
 
      .form-container {
-    width: 80%; /* تحديد عرض الحاوية */
+    width: 80%; 
     max-width: 400px; 
     height:300px;
     margin: 50px auto; 

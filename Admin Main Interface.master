@@ -11,9 +11,6 @@
 </head>
 <body>
 
-    <form id="form1" runat="server">
-
-  
     <header>
         <nav>
 
@@ -37,11 +34,11 @@
     <asp:ContentPlaceHolder ID="MainContent" runat="server"></asp:ContentPlaceHolder>
 
   
+
+
     <footer>
         <p>© جميع الحقوق محفوظة - ليبيا مصلحة الجوازات 2025</p>
     </footer>
-
-    </form>
 
 </body>
 </html>

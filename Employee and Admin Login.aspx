@@ -43,7 +43,7 @@
     protected void btnClear_Click(object sender, EventArgs e)
     {
         // مسح الحقول
-         Email.Text = " ";
+        Email.Text = " ";
         Password.Text = " ";
     }
 
