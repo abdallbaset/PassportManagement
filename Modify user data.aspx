@@ -4,7 +4,7 @@
 
 <script runat="server">
     // تعريف الاتصال بقاعدة البيانات
-    SqlConnection con = new SqlConnection("");
+    SqlConnection con = new SqlConnection("server=DESKTOP-POD3TM1\\SQLEXPRESS;database=Registration system;integrated security=sspi");
 
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -14,7 +14,7 @@
         }
     }
 
-    // دالة لجلب البيانات وربطها بـ GridView
+    //GridView  دالة لجلب البيانات وربطها بـ 
     protected void BindGridView()
     {
         string query = "SELECT User_id, User_name, Email, Pass, type FROM students";
@@ -85,11 +85,11 @@
       
         form{
             margin-top: 100px;
-         
-           max-width:70%;
-           margin:100px auto;
-           font-family:Tajawal;
-        }
+            max-width:70%;
+            margin:100px auto;
+            font-family:Tajawal;
+            margin-bottom:100px !important;
+           }
         table {
             width: 100%;
             border-collapse: collapse;
@@ -159,6 +159,9 @@
          color:#ffffff;
         border:none;
         }
+         .BatnResearch:hover {
+             background-color: #b68e54;
+         }
         .research{
               font-family:Tajawal;
               font-weight:900;
