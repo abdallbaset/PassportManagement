@@ -16,13 +16,13 @@
 
 
             <ul>
-                 <li class="logout"><a href="LostPassport.aspx">تسجيل خروج</a></li>
-                <li><a href="LostPassport.aspx">سجل التقارير</a></li>
-                <li><a href="RequestStatus.aspx">سجل العمليات</a></li>
-                <li><a href="CancelBooking.aspx">الطلبات</a></li>
-                <li><a href="RenewPassport.aspx">تعديل بيانات المستخدم</a></li>
-                <li><a href="CreatePassport.aspx">إضافة مستخدم</a></li>
-                <li><a href="Home.aspx">الصفحة الرئيسية</a></li>
+                 <li class="logout"><a href="Employee and Admin Login.aspx">تسجيل خروج</a></li>
+                <li><a class="action" href="Report log.aspx">سجل التقارير</a></li>
+                <li><a href="Transaction History.aspx">سجل العمليات</a></li>
+                <li><a href="Admin requests.aspx">الطلبات</a></li>
+                <li><a href="Modify user data.aspx">تعديل بيانات المستخدم</a></li>
+                <li><a href="Add user.aspx">إضافة مستخدم</a></li>
+                <li><a href="Admin Main Interface.aspx">الصفحة الرئيسية</a></li>
             </ul>
         </nav>
         <div class="logo">
@@ -41,4 +41,5 @@
     </footer>
 
 </body>
+    
 </html>

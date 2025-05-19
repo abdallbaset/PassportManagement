@@ -36,8 +36,7 @@
 
 
        
-        txtNationalID.Text = "";
-        txtFamilyBook.Text = "";
+       
     }
 
     protected void btnClear_Click(object sender, EventArgs e)

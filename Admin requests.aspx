@@ -3,21 +3,21 @@
 <%@ Import Namespace="System.Data" %>
 
 <script runat="server">
-    // تعريف الاتصال بقاعدة البيانات
+   
     SqlConnection con = new SqlConnection("");
 
     protected void Page_Load(object sender, EventArgs e)
     {
         if (!IsPostBack)
         {
-            BindGridView(); // ربط البيانات بـ GridView عند تحميل الصفحة لأول مرة
+            BindGridView(); //   لما تحمل الصفحة أول مرة GridView ربط البيانات ب  
         }
     }
 
-    // GridView دالة لجلب البيانات وربطها بـ 
+    // GridView دالة تجيب في البيانات وتربطها بـ 
     protected void BindGridView()
     {
-        string query = " ";//استعلام لجلب البيانات الطلبات من قاعدة البيانات
+        string query = " ";//استعلام يجيب  في البيانات الطلبات من قاعدة البيانات
         SqlDataAdapter da = new SqlDataAdapter(query, con);
         DataTable dt = new DataTable();
         da.Fill(dt);

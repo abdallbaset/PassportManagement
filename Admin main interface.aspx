@@ -12,11 +12,15 @@
     border-radius: 10px;
     box-shadow: 2px 2px 10px rgba(0,0,0,0.2);
 }
-
+        p{
+             display:inline;
+        }
+      
     </style>
     <asp:Panel ID="pnlWelcome" runat="server" CssClass="welcome-box">
     <h2>مرحبًا بكم في منظومة جواز السفر</h2>
-    <p><strong>Admin:</strong> AliMohammed@gmail.com</p>
+    <p><strong>Admin:</strong></p>
+        <asp:Label ID="EmailMaseeg" runat="server"  CssClass="Maseeg" Text=""></asp:Label>
 </asp:Panel>
 
 </asp:Content>

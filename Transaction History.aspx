@@ -1,5 +1,5 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Admin Main Interface.master" AutoEventWireup="true" CodeFile="Transaction History.aspx.cs" Inherits="Transaction_History" %>
-<%@ Import Namespace="System.Data" %>
+
 <script runat="server">
 protected void Page_Load(object sender, EventArgs e)
 {
@@ -75,7 +75,8 @@ protected void Page_Load(object sender, EventArgs e)
                   float:right;
                   margin-right:20px;
                   width:100px;
-                    height:30px;
+                  height:30px;
+                  outline:none;
 
              }
  

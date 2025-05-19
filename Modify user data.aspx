@@ -43,13 +43,12 @@
             TextBox txtPass = (TextBox)GridView1.Rows[e.RowIndex].FindControl("txtPass");
             TextBox txtType = (TextBox)GridView1.Rows[e.RowIndex].FindControl("txtType");
 
-            string query = "UPDATE students SET User_name = @UserName, Email = @Email, Pass = @Pass, type = @Type WHERE User_id = @UserID";
+            string query = "UPDATE اسم الجدول SET  اسم عمود بريد الكتروني = @Email, اسم عمود كلمة المرور = @Pass";
             SqlCommand cmd = new SqlCommand(query, con);
-            cmd.Parameters.AddWithValue("@UserID", userID);
-            cmd.Parameters.AddWithValue("@UserName", txtUserName.Text);
+        
             cmd.Parameters.AddWithValue("@Email", txtEmail.Text);
             cmd.Parameters.AddWithValue("@Pass", txtPass.Text);
-            cmd.Parameters.AddWithValue("@Type", txtType.Text);
+          
 
             con.Open();
             cmd.ExecuteNonQuery();
@@ -202,19 +201,19 @@
              
                 <asp:TemplateField HeaderText="كلمة المرور">
                     <ItemTemplate>
-                        <%# Eval("Pass") %>
+                        <%# Eval("اسم عمود كلمة المرور") %>
                     </ItemTemplate>
                     <EditItemTemplate>
-                        <asp:TextBox ID="txtPass" runat="server" Text='<%# Bind("Pass") %>' />
+                        <asp:TextBox ID="txtPass" runat="server" Text='<%# Bind("اسم عمود كلمة المرور") %>' />
                     </EditItemTemplate>
                 </asp:TemplateField>
                
                 <asp:TemplateField HeaderText="البريد الإلكتروني">
                     <ItemTemplate>
-                        <%# Eval("Email") %>
+                        <%# Eval("اسم عمودالبريدالكتروني") %>
                     </ItemTemplate>
                     <EditItemTemplate>
-                        <asp:TextBox ID="txtEmail" runat="server" Text='<%# Bind("Email") %>' />
+                        <asp:TextBox ID="txtEmail" runat="server" Text='<%# Bind("اسم عمودالبريدالكتروني") %>' />
                     </EditItemTemplate>
                 </asp:TemplateField>
             </Columns>
