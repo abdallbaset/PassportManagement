@@ -1,5 +1,6 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" %>
-
+<%@ Import Namespace="System.Data.SqlClient" %>
+<%@ Import Namespace="System.Data" %>
 <!DOCTYPE html>
 <html lang="ar">
 <head>
@@ -22,7 +23,11 @@
                 <div class="buttons">
                     <asp:Button ID="btnClear" runat="server" Text="مسح الحقول "  CssClass="clear" OnClick="btnClear_Click"/>
                     <asp:Button ID="btnLogin" runat="server" Text="تسجيل الدخول" CssClass="login" OnClick="btnLogin_Click"/>
+                    <br />
+                    <br />
+
                 </div>
+                <asp:Label ID="lblMessage" runat="server" CssClass="msg-success" Visible="false"></asp:Label>
             </form>
         </div>
     </div>
@@ -30,15 +35,57 @@
 </html>
 
 <script runat="server">
-    protected void btnLogin_Click(object sender, EventArgs e)
-    {
-        
+        SqlConnection con = new SqlConnection("Server=msi;Database=the_main;Integrated Security=True;");
+        protected void btnLogin_Click(object sender, EventArgs e)
+        {
+
+            string sql = "select *from users where email =@email and password_hash=@pass";
+            SqlCommand cmd = new SqlCommand(sql, con);
+            cmd.Parameters.AddWithValue("@email", Email.Text);
+            cmd.Parameters.AddWithValue("@pass", Password.Text);
+            SqlDataReader read;
+            con.Open();
+            read = cmd.ExecuteReader();
+            if (read.HasRows)
+            {
+                string user_type = "";
+                while (read.Read())
+                {
+                    Session["user"] = read["User_id"].ToString();
+                    user_type = read["role"].ToString();
+                }
+
+                con.Close();
+
+                if (user_type == "1")
+                {
+                    Response.Redirect("Admin main interface.aspx");
+                }
+
+                else if (user_type == "2")
+                {
+
+                    Response.Redirect("Employee interface.apx");
+                }
+                else
+                {
+                    lblMessage.Visible = true;
+                    lblMessage.Text = "كلمة المرور او البريد الكتروني خاطئ";
+
+                }
+            }
+            else
+            {
+                Email.Text = " ";
+                lblMessage.Visible = true;
+                lblMessage.Text = "  !!!!!   ";
+
+            }
 
 
-         Email.Text = " ";
-        Password.Text = " ";
+        }
 
-    }
+    
 
     protected void btnClear_Click(object sender, EventArgs e)
     {
@@ -46,5 +93,6 @@
         Email.Text = " ";
         Password.Text = " ";
     }
+
 
 </script>
