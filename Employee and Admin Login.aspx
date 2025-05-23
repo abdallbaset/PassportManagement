@@ -35,8 +35,7 @@
         
 
 
-         Email.Text = " ";
-        Password.Text = " ";
+    
 
     }
 
