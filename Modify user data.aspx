@@ -3,21 +3,21 @@
 <%@ Import Namespace="System.Data" %>
 
 <script runat="server">
-    // تعريف الاتصال بقاعدة البيانات
-    SqlConnection con = new SqlConnection("server=DESKTOP-POD3TM1\\SQLEXPRESS;database=Registration system;integrated security=sspi");
+ 
+    SqlConnection con = new SqlConnection("");
 
     protected void Page_Load(object sender, EventArgs e)
     {
         if (!IsPostBack)
         {
-            BindGridView(); // ربط البيانات بـ GridView عند تحميل الصفحة لأول مرة
+            BindGridView(); // لما تتحمل الصفحة أول مره GridView  بتربط البيانات ب  
         }
     }
 
-    //GridView  دالة لجلب البيانات وربطها بـ 
+    //GridView  دالة تجي في البيانات وتربطها بـ 
     protected void BindGridView()
     {
-        string query = "SELECT User_id, User_name, Email, Pass, type FROM students";
+        string query = "SELECTاسم عمود بريد الكتروني  ,اسم عمود كلمة المرو   FROM اسم جدول";
         SqlDataAdapter da = new SqlDataAdapter(query, con);
         DataTable dt = new DataTable();
         da.Fill(dt);
@@ -37,11 +37,10 @@
     {
         try
         {
-            int userID = Convert.ToInt32(GridView1.DataKeys[e.RowIndex].Value); // جلب المفتاح الأساسي
-            TextBox txtUserName = (TextBox)GridView1.Rows[e.RowIndex].FindControl("txtUserName");
+            int UserId  = Convert.ToInt32(GridView1.DataKeys[e.RowIndex].Value); // تجيب في المفتاح الأساسي
             TextBox txtEmail = (TextBox)GridView1.Rows[e.RowIndex].FindControl("txtEmail");
             TextBox txtPass = (TextBox)GridView1.Rows[e.RowIndex].FindControl("txtPass");
-            TextBox txtType = (TextBox)GridView1.Rows[e.RowIndex].FindControl("txtType");
+           
 
             string query = "UPDATE اسم الجدول SET  اسم عمود بريد الكتروني = @Email, اسم عمود كلمة المرور = @Pass";
             SqlCommand cmd = new SqlCommand(query, con);

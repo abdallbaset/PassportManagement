@@ -84,8 +84,6 @@ private DataTable GetReport(string reportType, DateTime startDate, DateTime endD
 {
     gvReport.Columns.Add(new BoundField { DataField = header, HeaderText = header });
 }
-
-
     //   GridView عرض البيانات في 
     gvReport.DataSource = dt;
     gvReport.DataBind();

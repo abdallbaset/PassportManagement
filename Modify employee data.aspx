@@ -1,16 +1,8 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Admin Main Interface.master"   %>
-
-<script runat="server">
-
-    protected void btnAddUser_Click(object sender, EventArgs e)
-    {
-
-    }
-</script>
-
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Employee interface.master" AutoEventWireup="true" CodeFile="Modify employee data.aspx.cs" Inherits="Modify_employee_data" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" Runat="Server">
-    <style>
+
+        <style>
      
 
      .form-container {
@@ -74,14 +66,16 @@
         }
     </style>
 
-    <form runat="server" class="form-container">
-        <h2>إضافة مستخدم جديد</h2>
+    <form runat="server" class="form-container" >
 
-        <asp:TextBox ID="txtEmail" runat="server" CssClass="input-box" placeholder="  ادخل البريد الإلكتروني" required TextMode="Email" ></asp:TextBox>
-        <asp:TextBox ID="txtPassword" runat="server" CssClass="input-box" placeholder=" ادخل كلمة المرور  " TextMode="Password" required ></asp:TextBox>
+        <h2>تعديل البيانات</h2>
 
-        <asp:Button ID="btnAddUser" runat="server" Text="إضافة مستخدم" CssClass="btn-add" OnClick="btnAddUser_Click" />
+        <asp:TextBox ID="txtEmail" runat="server" CssClass="input-box" placeholder="   ادخل البريد الإلكتروني الجديد" required TextMode="Email" ></asp:TextBox>
+        <asp:TextBox ID="txtPassword" runat="server" CssClass="input-box" placeholder=" ادخل كلمة المرور الجديد  " TextMode="Password" required ></asp:TextBox>
+
+        <asp:Button ID="btnAddUser" runat="server" Text="تحفظ" CssClass="btn-add" OnClick="btnAddUser_Click" />
 
         <asp:Label ID="lblMessage" runat="server" CssClass="msg-success" Visible="false"></asp:Label>
     </form>
 </asp:Content>
+

@@ -15,10 +15,10 @@
     <header>
         <nav>
             <ul>
-                <li class="logout"><a href="LostPassport.aspx">تسجيل خروج</a></li>
-                <li><a href="RenewPassport.aspx"> الطلبات</a></li>
-                <li><a href="CreatePassport.aspx">تعديل البيانات</a></li>
-                <li><a href="Home.aspx">الصفحة الرئيسية</a></li>
+                <li class="logout"><a href="Employee and Admin Login.aspx">تسجيل خروج</a></li>
+                <li><a href="Admin requests.aspx"> الطلبات</a></li>
+                <li><a href="Modify employee data.aspx">تعديل البيانات</a></li>
+                <li><a href="Employee home page.aspx">الصفحة الرئيسية</a></li>
             </ul>
         </nav>
         <div class="logo">
