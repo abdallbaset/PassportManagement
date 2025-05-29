@@ -65,7 +65,7 @@
                 else if (user_type == "2")
                 {
 
-                    Response.Redirect("Employee interface.apx");
+                    Response.Redirect("User interface.apx");
                 }
                 else
                 {
@@ -78,7 +78,7 @@
             {
                 Email.Text = " ";
                 lblMessage.Visible = true;
-                lblMessage.Text = "  !!!!!   ";
+                lblMessage.Text = " كلمة المرور او البريد الكتروني خاطئ   ";
 
             }
 
