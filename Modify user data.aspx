@@ -3,8 +3,9 @@
 <%@ Import Namespace="System.Data" %>
 
 <script runat="server">
- 
-    SqlConnection con = new SqlConnection("");
+
+    SqlConnection con = new SqlConnection("Server=msi;Database=the_main;Integrated Security=True;");
+
 
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -17,7 +18,7 @@
     //GridView  دالة تجي في البيانات وتربطها بـ 
     protected void BindGridView()
     {
-        string query = "SELECTاسم عمود بريد الكتروني  ,اسم عمود كلمة المرو   FROM اسم جدول";
+        string query = "SELECT * FROM Users";
         SqlDataAdapter da = new SqlDataAdapter(query, con);
         DataTable dt = new DataTable();
         da.Fill(dt);
@@ -37,17 +38,17 @@
     {
         try
         {
-            int UserId  = Convert.ToInt32(GridView1.DataKeys[e.RowIndex].Value); // تجيب في المفتاح الأساسي
+            int @User_id  = Convert.ToInt32(GridView1.DataKeys[e.RowIndex].Value); // تجيب في المفتاح الأساسي
             TextBox txtEmail = (TextBox)GridView1.Rows[e.RowIndex].FindControl("txtEmail");
             TextBox txtPass = (TextBox)GridView1.Rows[e.RowIndex].FindControl("txtPass");
-           
 
-            string query = "UPDATE اسم الجدول SET  اسم عمود بريد الكتروني = @Email, اسم عمود كلمة المرور = @Pass";
+
+            string query = "UPDATE users SET  email = @Email, password_hash = @Pass where User_id= @User_id1  ";
             SqlCommand cmd = new SqlCommand(query, con);
-        
+
             cmd.Parameters.AddWithValue("@Email", txtEmail.Text);
             cmd.Parameters.AddWithValue("@Pass", txtPass.Text);
-          
+            cmd.Parameters.AddWithValue("@User_id1", @User_id);
 
             con.Open();
             cmd.ExecuteNonQuery();
@@ -70,12 +71,33 @@
         BindGridView(); // إعادة ربط البيانات
     }
 
+    protected void GridView1_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        string selectedUserID = GridView1.SelectedDataKey.Value.ToString(); // الحصول على قيمة المفتاح الأساسي
+                                                                            // يمكنك هنا تنفيذ أي عمليات إضافية مثل جلب بيانات المستخدم المختار
+    }
+
     // الترحيل (Paging)
     protected void GridView1_PageIndexChanging(object sender, GridViewPageEventArgs e)
     {
         GridView1.PageIndex = e.NewPageIndex; // تغيير الصفحة
         BindGridView(); // إعادة ربط البيانات
     }
+    protected void Button1_Click(object sender, EventArgs e)
+    {
+        string query = "SELECT password_hash, email, User_id FROM users WHERE email=@aemail";
+        SqlCommand dat = new SqlCommand(query, con);
+
+        dat.Parameters.AddWithValue("@aemail", TextBox1.Text);
+        using (SqlDataAdapter adapter = new SqlDataAdapter(dat))
+        {
+            DataTable dt = new DataTable();
+            adapter.Fill(dt);
+            GridView1.DataSource = dt;
+            GridView1.DataBind();
+        }
+    }
+
 </script>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" Runat="Server">
@@ -185,7 +207,7 @@
          </div>
 
         <asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="False" CssClass="table" GridLines="None" DataKeyNames="User_id" AllowPaging="True"
-            PageSize="6" OnRowEditing="GridView1_RowEditing" OnRowUpdating="GridView1_RowUpdating" OnRowCancelingEdit="GridView1_RowCancelingEdit" OnPageIndexChanging="GridView1_PageIndexChanging">
+            PageSize="6" OnRowEditing="GridView1_RowEditing" OnRowUpdating="GridView1_RowUpdating" OnRowCancelingEdit="GridView1_RowCancelingEdit" OnPageIndexChanging="GridView1_PageIndexChanging" OnSelectedIndexChanged="GridView1_SelectedIndexChanged" >
             <Columns>
                 <asp:TemplateField>
                     <ItemTemplate>
@@ -200,19 +222,19 @@
              
                 <asp:TemplateField HeaderText="كلمة المرور">
                     <ItemTemplate>
-                        <%# Eval("اسم عمود كلمة المرور") %>
+                        <%# Eval("password_hash") %>
                     </ItemTemplate>
                     <EditItemTemplate>
-                        <asp:TextBox ID="txtPass" runat="server" Text='<%# Bind("اسم عمود كلمة المرور") %>' />
+                        <asp:TextBox ID="txtPass" runat="server" Text='<%# Bind("password_hash") %>' />
                     </EditItemTemplate>
                 </asp:TemplateField>
                
                 <asp:TemplateField HeaderText="البريد الإلكتروني">
                     <ItemTemplate>
-                        <%# Eval("اسم عمودالبريدالكتروني") %>
+                        <%# Eval("email") %>
                     </ItemTemplate>
                     <EditItemTemplate>
-                        <asp:TextBox ID="txtEmail" runat="server" Text='<%# Bind("اسم عمودالبريدالكتروني") %>' />
+                        <asp:TextBox ID="txtEmail" runat="server" Text='<%# Bind("email") %>' />
                     </EditItemTemplate>
                 </asp:TemplateField>
             </Columns>
