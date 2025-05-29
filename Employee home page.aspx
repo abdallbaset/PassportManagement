@@ -1,5 +1,38 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Employee interface.master" AutoEventWireup="true" CodeFile="Employee home page.aspx.cs" Inherits="Employee_home_page" %>
+ <%@ Import Namespace="System.Data.SqlClient" %>
+<%@ Import Namespace="System.Data" %>
 
+<script runat="server">
+        protected void Page_Load(object sender, EventArgs e)
+        { string connectionString = "Server=msi;Database=the_main;Integrated Security=True;";
+            string query = "SELECT email FROM users WHERE User_id = @User_id";
+          
+
+    string Userid = Session["User"].ToString();
+
+           
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                SqlCommand cmd = new SqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@User_id", int.Parse(Userid));                // تحديد ID المواطن المطلوب
+
+                conn.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                if (reader.Read())
+                {
+                    EmailMaseeg.Text = reader["email"].ToString();
+
+                }
+
+
+                reader.Close();
+            }
+        }
+
+
+         </script>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" Runat="Server">
     <style>
         .welcome-box {
