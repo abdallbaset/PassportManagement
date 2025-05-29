@@ -1,9 +1,48 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Admin Main Interface.master"   %>
+<%@ Import Namespace="System.Data.SqlClient" %>
+<%@ Import Namespace="System.Data" %>
 
 <script runat="server">
 
     protected void btnAddUser_Click(object sender, EventArgs e)
     {
+        SqlConnection con = new SqlConnection("Server=msi;Database=the_main;Integrated Security=True");
+
+
+        con.Open();
+
+
+        string query = "INSERT INTO Users (email, password_hash,role) VALUES (@email, @password_hash,@role)";
+
+        using (SqlCommand command = new SqlCommand(query, con))
+            try{
+
+                command.Parameters.AddWithValue("@email",txtEmail.Text);
+                command.Parameters.AddWithValue("@password_hash",txtPassword.Text );
+                command.Parameters.AddWithValue("@role",1);
+
+                command.ExecuteNonQuery();
+
+                  lblMessage.Text = "تمت إضافة المستخدم بنجاح";
+    
+        // مسح حقل البريد الإلكتروني وكلمة المرور بعد الإضافة
+                txtEmail.Text = "";
+                txtPassword.Text = "";
+
+                // عرض رسالة تأكيد
+             
+            }
+            catch (Exception ex)
+            {
+                lblMessage.Text = "حدث خطأ أثناء إضافة المستخدم: " + ex.Message;
+            }
+
+
+
+
+
+
+
 
     }
 </script>
