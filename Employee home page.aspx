@@ -4,7 +4,7 @@
 
 <script runat="server">
         protected void Page_Load(object sender, EventArgs e)
-        { string connectionString = "Server=msi;Database=the_main;Integrated Security=True;";
+        { string connectionString = "Server=msi;Database=the_main;Integrated Security=True";
             string query = "SELECT email FROM users WHERE User_id = @User_id";
           
 
