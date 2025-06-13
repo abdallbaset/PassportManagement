@@ -3,67 +3,136 @@
 <%@ Import Namespace="System.Data" %>
 
 <script runat="server">
-   
-    SqlConnection con = new SqlConnection("");
+
+    SqlConnection con = new SqlConnection("Server=msi;Database=the_main;Integrated Security=True");
 
     protected void Page_Load(object sender, EventArgs e)
     {
         if (!IsPostBack)
         {
-            BindGridView(); //   لما تحمل الصفحة أول مرة GridView ربط البيانات ب  
+            BindGridView();
         }
     }
 
-    // GridView دالة تجيب في البيانات وتربطها بـ 
     protected void BindGridView()
-    {
-        string query = " ";//استعلام يجيب  في البيانات الطلبات من قاعدة البيانات
-        SqlDataAdapter da = new SqlDataAdapter(query, con);
-        DataTable dt = new DataTable();
-        da.Fill(dt);
-        GridView1.DataSource = dt;
-        GridView1.DataBind();
-    }
-
-  
-
- 
-    protected void GridView1_RowUpdating(object sender, GridViewUpdateEventArgs e)
     {
         try
         {
+            string query = "SELECT p.Request_id, p.Request_type, p.Request_date, a.National_id FROM passport_requests p INNER JOIN appointments a ON p.Appointment_id = a.Appointment_id WHERE p.Status =0;";
 
-            BindGridView(); // إعادة ربط البيانات
-            Labe_maseg.Text = "تم  قبول الطلب ";
+            con.Open();
+            SqlDataAdapter da = new SqlDataAdapter(query, con);
+            DataTable data = new DataTable();
+            da.Fill(data);
+
+            if (data.Rows.Count > 0)
+            {
+                GridView1.DataSource = data;
+                GridView1.DataBind();
+            }
+            else
+            {
+                Labe_maseg.Text = "لا توجد بيانات لعرضها.";
+            }
         }
         catch (Exception ex)
         {
-            Labe_maseg.Text = "حدث خطأ: " + ex.Message;
+            Labe_maseg.Text = "حدث خطأ أثناء جلب البيانات: " + ex.Message;
+        }
+        finally
+        {
+            con.Close();
         }
     }
 
-    // الترحيل (Paging)
-    protected void GridView1_PageIndexChanging(object sender, GridViewPageEventArgs e)
+    protected void GridView1_RowCommand(object sender, GridViewCommandEventArgs e)
     {
-        GridView1.PageIndex = e.NewPageIndex; // تغيير الصفحة
-        BindGridView(); // إعادة ربط البيانات
-    }
-</script>
-<asp:Content ID="Content1" ContentPlaceHolderID="MainContent" Runat="Server">
-  
-       <style>
-      
-        form{
-            margin-top: 100px;
-         
-           max-width:70%;
-           margin:100px auto;
-           font-family:Tajawal;
+        int rowIndex = Convert.ToInt32(e.CommandArgument);
+        string requestId = GridView1.DataKeys[rowIndex].Value.ToString();
+
+        if (e.CommandName == "acceptance")
+        {
+            AcceptRequest(requestId);
+            Labe_maseg.Text = "تم قبول الطلب بنجاح.";
         }
+        else if (e.CommandName == "Rejection")
+        {
+            RejectRequest(requestId);
+            Labe_maseg.Text = "تم رفض الطلب.";
+        }
+    }
+
+    protected void AcceptRequest(string requestId)
+    {
+        using (SqlConnection con = new SqlConnection("Server=msi;Database=the_main;Integrated Security=True"))
+        {
+            con.Open();
+            string query = "UPDATE passport_requests SET Status = '1' WHERE Request_id = @RequestId";
+            using (SqlCommand cmd = new SqlCommand(query, con))
+            {
+                cmd.Parameters.AddWithValue("@RequestId", requestId);
+                cmd.ExecuteNonQuery();
+            }
+            DateTime now = DateTime.Now;
+            string Userid = Session["User"].ToString();
+            string sql = "insert into local_history(user_id,action_type,creat_at) values (@user_id,@action_type,@creat_at)";
+            SqlCommand cmda = new SqlCommand(sql, con);
+            cmda.Parameters.AddWithValue("@user_id", int.Parse(Userid));
+            cmda.Parameters.AddWithValue("@action_type", "قبول");
+            cmda.Parameters.AddWithValue("@creat_at", now);
+            cmda.ExecuteNonQuery();
+            string sql1 = "INSERT INTO report_details (status, Appointment_id) SELECT 'قبول', Appointment_id FROM passport_requests WHERE Request_id = @RequestId;";
+            SqlCommand cmd1 = new SqlCommand(sql1, con);
+            cmd1.ExecuteNonQuery();
+            con.Close();
+
+        }
+    }
+
+    protected void RejectRequest(string requestId)
+    {
+        using (SqlConnection con = new SqlConnection("Server=msi;Database=the_main;Integrated Security=True"))
+        {
+            con.Open();
+            string query = "UPDATE passport_requests SET Status = '1' WHERE Request_id = @RequestId";
+            using (SqlCommand cmd = new SqlCommand(query, con))
+            {
+                cmd.Parameters.AddWithValue("@RequestId", requestId);
+                cmd.ExecuteNonQuery();
+            }
+            DateTime now = DateTime.Now;
+            string Userid = Session["User"].ToString();
+            string sql = "insert into local_history(user_id,action_type,creat_at) values (@user_id,@action_type,@creat_at)";
+            SqlCommand cmda = new SqlCommand(sql, con);
+            cmda.Parameters.AddWithValue("@user_id", int.Parse(Userid));
+            cmda.Parameters.AddWithValue("@action_type", "رفض");
+            cmda.Parameters.AddWithValue("@creat_at", now);
+             string sql2 = "INSERT INTO report_details (status, Appointment_id) SELECT 'رفض', Appointment_id FROM passport_requests WHERE Request_id = @RequestId;";
+            SqlCommand cmd1 = new SqlCommand(sql2, con);
+            
+            con.Open();
+            cmd1.ExecuteNonQuery();
+
+            cmda.ExecuteNonQuery();
+            con.Close();
+
+        }
+    }
+
+</script>
+
+<asp:Content ID="Content1" ContentPlaceHolderID="MainContent" Runat="Server">
+    <style>
+        form {
+            margin-top: 100px;
+            max-width: 70%;
+            margin: 100px auto;
+            font-family: Tajawal;
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
-          
         }
 
         table th, table td {
@@ -78,13 +147,13 @@
         }
 
         .maseeg {
-            display:block;
+            display: block;
             margin-top: 10px;
             font-weight: bold;
             color: #28a745;
-            text-align:center;
-           
+            text-align: center;
         }
+
         .acceptance-button {
             background-color: #28a745;
             color: white;
@@ -102,76 +171,26 @@
             border-radius: 5px;
             cursor: pointer;
         }
-           .bttnReason {
-         font-family:Tajawal;
-         font-weight:700;
-         float:right;
-         margin-bottom:20px;
-         width:70px;
-         height:35px;
-         border-radius:5px;
-         background-color:#152d52;
-         color:#ffffff;
-         border:none;
-                       }
-          .ReasonField{
-          font-family:Tajawal;
-          font-weight:900;
-          height:30px;
-          float:right;
-          width:230px;
-          border-radius:5px;
-          outline:none;
-          border:none;
-          margin-right:20px;
-          text-align:right;
-
-          }
-          .Reamaseeg{
-           font-family:Tajawal;
-           font-weight: bold;
-           color: #ff0000;
-           float:right;
-           margin-right:20px;
-          }
- 
     </style>
-     <form id="form1" runat="server">
-        
 
+    <form id="form1" runat="server">
         <asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="False" CssClass="table" GridLines="None" DataKeyNames="Request_id" AllowPaging="True"
-            PageSize="6" OnRowEditing="GridView1_RowEditing" OnRowUpdating="GridView1_RowUpdating" OnRowCancelingEdit="GridView1_RowCancelingEdit" OnPageIndexChanging="GridView1_PageIndexChanging" OnSelectedIndexChanged="GridView1_SelectedIndexChanged">
+            PageSize="6" OnRowCommand="GridView1_RowCommand">
             <Columns>
                 <asp:TemplateField HeaderText="الإجراء">
                     <ItemTemplate>
-                        <asp:Button ID="btnRejection" runat="server" Text="رفض" CommandName="Rejection" CssClass="Rejection-button" />
-                        <asp:Button ID="btnacceptance" runat="server" Text="قبول" CommandName="acceptance" CssClass="acceptance-button" />
+                        <asp:Button ID="btnRejection" runat="server" Text="رفض" CommandName="Rejection" CommandArgument='<%# Container.DataItemIndex %>' CssClass="Rejection-button" />
+                        <asp:Button ID="btnacceptance" runat="server" Text="قبول" CommandName="acceptance" CommandArgument='<%# Container.DataItemIndex %>' CssClass="acceptance-button" />
                     </ItemTemplate>
                 </asp:TemplateField>
 
-                         <asp:BoundField DataField="RequestType" HeaderText="نوع الطلب" />
-                         <asp:BoundField DataField="RequestDate" HeaderText="تاريخ تقديم الطلب" />
-                         <asp:BoundField DataField="NationalID" HeaderText="رقم الوطني لمقدم الطلب" />
-                         <asp:BoundField DataField="RequestID" HeaderText="رقم الطلب" />
-                </Columns>
+                <asp:BoundField DataField="Request_type" HeaderText="نوع الطلب" />
+                <asp:BoundField DataField="Request_date" HeaderText="تاريخ تقديم الطلب" />
+                <asp:BoundField DataField="National_id" HeaderText="رقم الوطني لمقدم الطلب" />
+                <asp:BoundField DataField="Request_id" HeaderText="رقم الطلب" />
+            </Columns>
         </asp:GridView>
-        <asp:Label ID="Labe_maseg" runat="server"  CssClass="maseeg"></asp:Label>
-                   <asp:Button ID="BtnReason" runat="server" Text="إرسال" CssClass="bttnReason" Visible="False" />
-                   <asp:TextBox ID="ReasonForReection" runat="server" CssClass="ReasonField  " Visible="False"></asp:TextBox>
-                   <asp:Label ID="Label1" runat="server" Text="تم رفض الطلب" CssClass="Reamaseeg" Visible="False"></asp:Label>
-         </form>
+
+        <asp:Label ID="Labe_maseg" runat="server" CssClass="maseeg"></asp:Label>
+    </form>
 </asp:Content>
-
-
-
-
-
-
-
-
-
-
-
-
-
-       
