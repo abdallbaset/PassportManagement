@@ -21,4 +21,9 @@ public partial class Report_log : System.Web.UI.Page
     {
 
     }
+
+    protected void gvReport_SelectedIndexChanged(object sender, EventArgs e)
+    {
+
+    }
 }

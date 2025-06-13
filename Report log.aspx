@@ -40,20 +40,20 @@
             try
             {
                 conn.Open();
-                 string query = "SELECT r.national_id, r.city, r.region, r.phone, c.Full_name FROM report_details r INNER JOIN citizens c ON r.national_id = c.national_id WHERE date BETWEEN @StartDate AND @EndDate  AND r.status = @ReportType;";
+                 string query = "";
                 
                 if (reportType == "Accepted")
                 {
 
-                     query = "SELECT r.phone as 'رقم الهاتف',  r.region as 'المنطقة',r.city as 'المدينة' , r.national_id as 'الرقم الوطني' ,  c.Full_name as 'الاسم' FROM report_details r INNER JOIN citizens c ON r.national_id = c.national_id  WHERE date BETWEEN @StartDate AND @EndDate  AND r.status = @ReportType;";
+                     query = "SELECT a.phone AS 'رقم الهاتف', a.district AS 'المنطقة', a.city AS 'المدينة', a.national_id AS 'الرقم الوطني', c.Full_name AS 'الاسم' FROM appointments a INNER JOIN citizens c ON a.national_id = c.national_id WHERE a.Appointment_date BETWEEN @StartDate AND @EndDate AND a.Request_type = @ReportType";
                 }
                 else if (reportType == "RenewalRejected" || reportType == "NewRejected")
                 {
-                     query = "SELECT  r.rejection_reason as 'سبب الرفض',   r.region as 'المنطقة',r.city as 'المدينة' , r.national_id as 'الرقم الوطني' ,  c.Full_name as 'الاسم' FROM report_details r INNER JOIN citizens c ON r.national_id = c.national_id WHERE date BETWEEN @StartDate AND @EndDate  AND r.status = @ReportType;";
+                     query = "SELECT  r.rejection_reason as 'سبب الرفض',   a.district AS 'المنطقة', a.city AS 'المدينة', a.national_id AS 'الرقم الوطني', c.Full_name AS 'الاسم' FROM appointments a INNER JOIN citizens c ON a.national_id = c.national_id INNER JOIN report_details r on a.Appointment_id= r.Appointment_id  WHERE a.Appointment_date BETWEEN @StartDate AND @EndDate AND a.Request_type = @ReportType";
                 }
                 else if (reportType == "Reported")
                 {
-                    query = "SELECT  r.report_details as 'نوع البلاغ',  r.region as 'المنطقة',r.city as 'المدينة' , r.national_id as 'الرقم الوطني' ,  c.Full_name as 'الاسم' FROM report_details r INNER JOIN citizens c ON r.national_id = c.national_id WHERE date BETWEEN @StartDate AND @EndDate  AND r.status = @ReportType;";
+                    query = "SELECT  r.report_details as 'نوع البلاغ',   a.district AS 'المنطقة', a.city AS 'المدينة', a.national_id AS 'الرقم الوطني', c.Full_name AS 'الاسم' FROM appointments a INNER JOIN citizens c ON a.national_id = c.national_id INNER JOIN report_details r on a.Appointment_id= r.Appointment_id  WHERE a.Appointment_date BETWEEN @StartDate AND @EndDate AND a.Request_type = @ReportType";
                 }
 
                 using (SqlCommand cmd = new SqlCommand(query, conn))
@@ -90,13 +90,17 @@
                 conn.Open();
 
                 string query = @"SELECT  
-                                COUNT(*) AS 'اجمالي الطلبات',
-                                
-                                COUNT(CASE WHEN status = 'RenewalRejected' THEN 1 END) AS 'عدد رفض تجديد',
-                                COUNT(CASE WHEN status = 'NewRejected' THEN 1 END) AS 'عدد رفض  جديد',
-                               COUNT(CASE WHEN status = 'Accepted' THEN 1 END) AS 'عدد القبول'
-                            FROM report_details
-                            WHERE date BETWEEN @StartDate AND @EndDate";
+    COUNT(*) AS 'اجمالي الطلبات',
+    COUNT(CASE WHEN Request_type = 'RenewalRejected' THEN 1 END) AS 'عدد تجديد جواز',
+    COUNT(CASE WHEN Request_type = 'NewRejected' THEN 1 END) AS 'عدد إنشاء جواز جديد',
+    COUNT(CASE WHEN Request_type = 'Reported' THEN 1 END) AS 'عدد الإبلاغات',
+    COUNT(CASE WHEN status = 'قبول' THEN 1 END) AS 'إجمالي الطلبات المقبولة',
+    COUNT(CASE WHEN status = 'رفض' THEN 1 END) AS 'إجمالي الطلبات المرفوضة'
+FROM appointments
+LEFT JOIN report_details ON appointments.appointment_id = report_details.appointment_id
+WHERE appointment_date BETWEEN @StartDate AND @EndDate";
+
+
 
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
@@ -258,7 +262,7 @@
     <asp:ListItem Text="تقرير بالإبلاغ" Value="Reported" />
 </asp:DropDownList>
         <asp:Label ID="Erorrmasseg" runat="server" Text="" CssClass="Erorrmasseg"></asp:Label>
-               <asp:GridView ID="gvReport" runat="server" AutoGenerateColumns="true" >
+               <asp:GridView ID="gvReport" runat="server" AutoGenerateColumns="true" OnSelectedIndexChanged="gvReport_SelectedIndexChanged" >
                   </asp:GridView>
 
 
