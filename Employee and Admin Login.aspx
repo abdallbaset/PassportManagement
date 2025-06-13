@@ -65,7 +65,7 @@
                 else if (user_type == "2")
                 {
 
-                    Response.Redirect("User interface.apx");
+                    Response.Redirect("Employee home page.aspx");
                 }
                 else
                 {
