@@ -1,4 +1,6 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" %>
+<%@ Import Namespace="System.Data.SqlClient" %>
+<%@ Import Namespace="System.Data" %>
 
 <!DOCTYPE html>
 <html lang="ar">
@@ -30,14 +32,24 @@
 </html>
 
 <script runat="server">
-
+    SqlConnection con = new SqlConnection("Server=msi;Database=the_main;Integrated Security=True;");
     protected void btnLogin_Click(object sender, EventArgs e)
     {
-        
+        string sql = "select *from citizens where National_id =@National_id and Family_book_number=@Family_book_number";
+        SqlCommand cmd = new SqlCommand(sql, con);
+        cmd.Parameters.AddWithValue("@National_id", txtNationalID.Text);
+        cmd.Parameters.AddWithValue("@Family_book_number", txtFamilyBook.Text);
+        SqlDataReader read;
+        con.Open();
+        read = cmd.ExecuteReader();
+        if (read.HasRows)
+        {
+            Response.Redirect("citizens interface");
+
+        }
 
 
-       
-       
+
     }
 
     protected void btnClear_Click(object sender, EventArgs e)
@@ -47,3 +59,4 @@
         txtFamilyBook.Text = "";
     }
 </script>
+
