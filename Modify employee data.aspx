@@ -1,5 +1,38 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Employee interface.master" AutoEventWireup="true" CodeFile="Modify employee data.aspx.cs" Inherits="Modify_employee_data" %>
+ <%@ Import Namespace="System.Data.SqlClient" %>
+<%@ Import Namespace="System.Data" %>
 
+<script runat="server">
+  protected void btnAddUser_Click(object sender, EventArgs e)
+{
+    string connectionString = "Server=msi;Database=the_main;Integrated Security=True";
+    
+    using (SqlConnection connection = new SqlConnection(connectionString))
+    {
+        string query = "UPDATE users SET email = @Email, password_hash = @Password WHERE User_id = @User_id";
+        SqlCommand command = new SqlCommand(query, connection);
+
+        command.Parameters.AddWithValue("@Email", txtEmail.Text);
+        command.Parameters.AddWithValue("@Password", txtPassword.Text);
+        command.Parameters.AddWithValue("@User_id", Session["user"].ToString());
+
+        connection.Open();
+        int rowsAffected = command.ExecuteNonQuery();
+        connection.Close();
+
+        if (rowsAffected > 0)
+        {
+            lblMessage.Text = "تم تحديث البيانات بنجاح!";
+            lblMessage.Visible = true;
+        }
+        else
+        {
+            lblMessage.Text = "لم يتم العثور على المستخدم أو حدث خطأ أثناء التحديث.";
+            lblMessage.Visible = true;
+        }
+    }
+}
+</script>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" Runat="Server">
 
         <style>
