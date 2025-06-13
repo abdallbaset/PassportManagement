@@ -19,7 +19,7 @@
 
                 command.Parameters.AddWithValue("@email",txtEmail.Text);
                 command.Parameters.AddWithValue("@password_hash",txtPassword.Text );
-                command.Parameters.AddWithValue("@role",1);
+                command.Parameters.AddWithValue("@role",2);
 
                 command.ExecuteNonQuery();
 
