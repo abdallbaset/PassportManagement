@@ -11,10 +11,19 @@ public partial class Transaction_History : System.Web.UI.Page
     {
 
     }
+    protected void gvReport_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        
+    }
 
- 
     protected void BtnSearch_Click(object sender, EventArgs e)
     {
          
     }
+
+    protected void ddlActionType_SelectedIndexChanged(object sender, EventArgs e)
+    {
+
+    }
+   
 }
